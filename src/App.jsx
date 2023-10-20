@@ -2,45 +2,109 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import {data} from "./data"
 
 function App() {
-  return <Incrementor />;
+  // return <Incrementor />;
+  
+  return <div className='container'>
+  <PeopleArray/>
+   <UsestateObject />
+   <UsestateGotcha />
+   </div>
 }
 
 export default App;
-//this wont work as we expected --usestate
-// const Incrementor = () => {
-//   let count = 0;
+// const Incrementor = ()=>{
+//   const [count,setCount] = useState(0)
 
-//   const clickHandler = () => {
-//     count = count + 1;
-//     console.log(count);
-//   };
+//   const countHandler = () =>{
+//     setCount(count+1)
+//   }
+//   return(
+//     <>
+//     <h1>{count}</h1>
+//     <button onClick={countHandler}>click me</button>
+//     </>
+//   )
+// }
 
-//   return (
-//     <div>
-//       <h1>{count}</h1>
-//       <button type="button" onClick={clickHandler}>
-//         click me to increase
-//       </button>
-//     </div>
-//   );
-// };
+const PeopleArray = () =>{
+  const[Peoples,setPeople] = useState(data)
 
-//this works as we epected --use state
-const Incrementor = () => {
-  const [count, setCount] = useState(0);
+  const clearPerson = (id) =>{
+    const newPeoples = Peoples.filter((person)=> person.id !== id)
+    setPeople([...newPeoples])
+  }
 
-  const clickHandler = () => {
-    setCount(count + 1);
-  };
+  //alternative way
+  // const clearALL = ()=>{
+  //   setPeople([])
+  // }
 
-  return (
-    <div>
-      <h1>{count}</h1>
-      <button type="button" onClick={clickHandler}>
-        click me to increase
-      </button>
-    </div>
-  );
-};
+  return(
+   <div>
+    {Peoples.map((person)=>{
+      console.log(person)
+      const {id,name} = person
+      return(
+        <div key={id}>
+          <h1>{name}</h1>
+          <button onClick={()=>clearPerson(id)}>clear</button>
+        </div>
+      )
+    })}
+    <button onClick={()=>setPeople([])}>Clear all Users</button>
+   </div>
+  )
+}
+
+const UsestateObject = () =>{
+
+const [person,setPerson] = useState({
+  "name":"prakashu",
+  "age":20,
+  "hobby":"playing games"
+})
+
+
+
+const clickHandler = () =>{
+  setPerson({
+    "name":"john",
+    "age":56,
+    "hobby":"scream at pc"
+  })
+  
+}
+
+
+return(
+  <div>
+    <h1>{person.name}</h1>
+    <h2>{person.age}</h2>
+    <h3>{person.hobby}</h3>
+    <button onClick={clickHandler}>show john</button>
+  </div>
+)
+
+}
+
+const UsestateGotcha = () =>{
+  const [count,setCount] = useState(0)
+
+
+const countHandler = () =>{
+  setTimeout(()=>{
+    setCount((current_state)=>{
+      const newState = current_state + 1
+      return newState;
+    })
+  },3000)
+}
+
+  return(<>
+  <h1>{count}</h1>
+  <button onClick={countHandler}>increase</button>
+  </>)
+}
